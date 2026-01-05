@@ -66,7 +66,7 @@ public class Movement : MonoBehaviour
     }
     void locomotion()
     {
-        if (Input.GetKey(KeyCode.LeftArrow))
+        if (Input.GetKey(KeyCode.A))
         {  
             FaceRight = false;
             if (RD2.velocity.x > -maxspeed)
@@ -78,7 +78,7 @@ public class Movement : MonoBehaviour
                 RD2.velocity = new Vector2(-maxspeed, RD2.velocity.y);
             }
         }
-        else if (Input.GetKey(KeyCode.RightArrow))
+        else if (Input.GetKey(KeyCode.D))
         {
             FaceRight = true;
             if (RD2.velocity.x < maxspeed)
@@ -90,11 +90,11 @@ public class Movement : MonoBehaviour
                 RD2.velocity = new Vector2(maxspeed, RD2.velocity.y);
             }
         }
-        else if (Input.GetKeyUp(KeyCode.LeftArrow) || Input.GetKeyUp(KeyCode.RightArrow))
+        else if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
         {
             RD2.velocity = new Vector2(0, RD2.velocity.y);
         }
-        else if (!Input.GetKeyUp(KeyCode.LeftArrow) && !Input.GetKeyUp(KeyCode.RightArrow))
+        else if (!Input.GetKeyUp(KeyCode.A) && !Input.GetKeyUp(KeyCode.D))
         {
             if (Dashing == false)
             {
@@ -106,7 +106,7 @@ public class Movement : MonoBehaviour
     {
         if (onwallR == true)
         {
-            if (Input.GetKey(KeyCode.RightArrow)&&Input.GetKeyDown(KeyCode.UpArrow))
+            if (Input.GetKey(KeyCode.D)&&Input.GetKeyDown(KeyCode.K))
             {
                 WallJumpBool = !WallJumpBool;
                 WallJumpCounter = 40;
@@ -115,7 +115,7 @@ public class Movement : MonoBehaviour
         }
         if (onwallL == true)
         {
-            if (Input.GetKey(KeyCode.LeftArrow)&&Input.GetKeyDown(KeyCode.UpArrow))
+            if (Input.GetKey(KeyCode.A)&&Input.GetKeyDown(KeyCode.K))
             {
                 WallJumpBool = !WallJumpBool;
                 WallJumpCounter = 40;
@@ -124,12 +124,12 @@ public class Movement : MonoBehaviour
         }
         if (WallJumpBool == true&&WallJumpCounter>=-9&&onwallL == false&&onwallR == false)
         {
-            if (WallJumpBool&&Input.GetKey(KeyCode.LeftArrow)&&Input.GetKey(KeyCode.UpArrow))
+            if (WallJumpBool&&Input.GetKey(KeyCode.A)&&Input.GetKey(KeyCode.K))
             {
                 RD2.velocity = new Vector2(WallJumpCounter,20);
                 WallJumpCounter-=2;
             }
-            else if (WallJumpBool&&Input.GetKey(KeyCode.RightArrow)&&Input.GetKey(KeyCode.UpArrow))
+            else if (WallJumpBool&&Input.GetKey(KeyCode.D)&&Input.GetKey(KeyCode.K))
             {
                 RD2.velocity = new Vector2(-WallJumpCounter,20);
                 WallJumpCounter-=2;
@@ -142,7 +142,7 @@ public class Movement : MonoBehaviour
     }
     void Jumping()
     {
-        if (Input.GetKey(KeyCode.UpArrow) && onground == true)
+        if (Input.GetKey(KeyCode.K) && onground == true)
         {
             if (Dashing == false)
             {
@@ -152,7 +152,7 @@ public class Movement : MonoBehaviour
     }
     void ResetY()
     {
-        if (onground==false&&!Input.GetKey(KeyCode.UpArrow))
+        if (onground==false&&!Input.GetKey(KeyCode.K))
         {
             if (RD2.velocity.y > 0)
             {
