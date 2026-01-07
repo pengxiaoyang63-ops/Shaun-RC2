@@ -34,9 +34,10 @@ public class Movement : MonoBehaviour
             RD2.gravityScale = 5f;
         }
         speed = 0.5f;
-        jump = 19f;
+        jump = 26f;
         onground = false;
         maxspeed = 12;
+        RD2.gravityScale = 6f;
     }
     void FixedUpdate()
     {
@@ -142,7 +143,7 @@ public class Movement : MonoBehaviour
     }
     void Jumping()
     {
-        if (Input.GetKey(KeyCode.K) && onground == true)
+        if (Input.GetKeyDown(KeyCode.K) && onground == true)
         {
             if (Dashing == false)
             {
