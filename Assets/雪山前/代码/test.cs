@@ -1,24 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class test : MonoBehaviour
+public class PlayerAttack : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public int damage = 10;
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter2D(Collider2D other)
     {
-        List<int> numbers = new List<int>() { 1, 2, 3, 4, 5 };
-
-        for (int i = 0; i < numbers.Count; i++)
+        if (other.CompareTag("Player")==true)
         {
-            int element = numbers[i];
-            Debug.Log($"元素: {element}");
+            CharacterInteractions a = GetComponent<CharacterInteractions>();
+            if (a != null)
+            {
+                a.TakeDamage(damage);
+            }
         }
     }
 }
