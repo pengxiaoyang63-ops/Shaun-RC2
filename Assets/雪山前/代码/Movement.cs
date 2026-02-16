@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using JetBrains.Annotations;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
@@ -22,6 +23,7 @@ public class Movement : MonoBehaviour
     public bool Dashing;
     public bool FaceRight;
     public int faceCoefficient;
+    public int DoubleJump = 0;
     void Start()
     {
         Time.fixedDeltaTime = 1/500f;
@@ -43,6 +45,7 @@ public class Movement : MonoBehaviour
     {
         Timer += Time.deltaTime;
         DashWait += Time.deltaTime;
+        DoubleJumpreset();
         if (Dashing == false)
         {
             locomotion();
@@ -64,6 +67,18 @@ public class Movement : MonoBehaviour
         {
             faceCoefficient = -1;
         }
+    }
+    void DoubleJumpreset()
+    {
+        if (onground == true || onwallL == true || onwallR == true)
+        {
+            Invoke("ResetDoubleJump",0.03f);
+            DoubleJump = 0;
+        }
+    }
+    void ResetDoubleJump()
+    {
+        DoubleJump = 0;
     }
     void locomotion()
     {
@@ -148,6 +163,14 @@ public class Movement : MonoBehaviour
             if (Dashing == false)
             {
                 RD2.velocity = new Vector2(RD2.velocity.x, jump);
+            }
+        }
+        else if (Input.GetKeyDown(KeyCode.K) && onground == false && onwallL == false && onwallR == false)
+        {
+            if (Dashing == false && DoubleJump == 0)
+            {
+                RD2.velocity = new Vector2(RD2.velocity.x, jump);
+                DoubleJump = 1;
             }
         }
     }
