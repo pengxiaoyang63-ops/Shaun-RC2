@@ -43,13 +43,12 @@ public class StoryUI : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("PLayer Enter. Press J to continue.");
+            Debug.Log("PLayer Enter. Press 1234 to continue.");
             cameraControl.CamX = transform.position.x;
             cameraControl.CamY = transform.position.y;
             cameraControl.CamIndex = 0.5f;
             storyUILogOut.StoryPlay = true;
-            storyUILogOut.NumberIndex = 1;
-            storyUILogOut.CurrentNumberIndex = 1;
+            storyUILogOut.NumberIndex = 0;
             SetIndex();
         }
     }

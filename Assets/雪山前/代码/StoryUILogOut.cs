@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class StoryUILogOut : MonoBehaviour
 {
@@ -11,22 +12,25 @@ public class StoryUILogOut : MonoBehaviour
     public int ClipIndex;      // 剧情片段索引
     public int NumberIndex;    // 序号索引
     public bool StoryPlay;
-    public int CurrentNumberIndex;
     public bool Nextpage;
     
     void Start()
     {
         StoryPlay = false;
-        NumberIndex = 1;
+        NumberIndex = 0;
         ChapterIndex = SceneIndex = ClipIndex = 0;
     }
     void NextPage()
     {
+        if (NumberIndex == 0)
+        {
+            NumberIndex++;
+        }
         StoryRow currentRow = PlotPlayer.Instance.GetStoryRow(
             ChapterIndex, 
             SceneIndex, 
             ClipIndex, 
-            CurrentNumberIndex
+            NumberIndex
             );
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
@@ -34,8 +38,7 @@ public class StoryUILogOut : MonoBehaviour
             Nextpage=true;
             if (currentRow.Goto1 != 0)
             {
-                CurrentNumberIndex = 1;
-                NumberIndex = 2;
+                NumberIndex = 1;
                 ClipIndex = currentRow.Goto1;
             }
         }
@@ -45,8 +48,7 @@ public class StoryUILogOut : MonoBehaviour
             Nextpage=true;
             if (currentRow.Goto2 != 0)
             {
-                CurrentNumberIndex = 1;
-                NumberIndex = 2;
+                NumberIndex = 1;
                 ClipIndex = currentRow.Goto2;
             }
         }
@@ -56,8 +58,7 @@ public class StoryUILogOut : MonoBehaviour
             Nextpage=true;
             if (currentRow.Goto3 != 0)
             {
-                CurrentNumberIndex = 1;
-                NumberIndex = 2;
+                NumberIndex = 1;
                 ClipIndex = currentRow.Goto3;
             }
         }
@@ -67,8 +68,7 @@ public class StoryUILogOut : MonoBehaviour
             Nextpage=true;
             if (currentRow.Goto4 != 0)
             {
-                CurrentNumberIndex = 1;
-                NumberIndex = 2;
+                NumberIndex = 1;
                 ClipIndex = currentRow.Goto4;
             }
         }
@@ -83,29 +83,46 @@ public class StoryUILogOut : MonoBehaviour
             ChapterIndex, 
             SceneIndex, 
             ClipIndex, 
-            CurrentNumberIndex
+            NumberIndex
             );
             if (currentRow != null)
             {
+                ArtLoader currentIllustration = ArtLoaderBehaviors.Instance.GetArtLoadingList($"{currentRow.Name}");
+                BackgroundLoader currentBackgroundLoader = BackgroundLocations.Instance.GetBackgroundLoadingList($"{currentRow.Background}");
                 if (Nextpage)
+                {
+                    Nextpage = !Nextpage;
+                    Debug.Log("=== Play ===");
+                    Debug.Log($"Name:{currentRow.Name}");
+                    Debug.Log($"Text {currentRow.Text}");
+                    Debug.Log($"Re1 {currentRow.Re1}");
+                    Debug.Log($"Re2 {currentRow.Re2}");
+                    Debug.Log($"Re3 {currentRow.Re3}");
+                    Debug.Log($"Re4 {currentRow.Re4}");
+                    if (currentIllustration != null)
                     {
-                        Nextpage = !Nextpage;
-                        Debug.Log("=== Play ===");
-                        Debug.Log($"Name:{currentRow.Name}");
-                        Debug.Log($"Text {currentRow.Text}");
-                        Debug.Log($"Re1 {currentRow.Re1}");
-                        Debug.Log($"Re2 {currentRow.Re2}");
-                        Debug.Log($"Re3 {currentRow.Re3}");
-                        Debug.Log($"Re4 {currentRow.Re4}"); 
+                        Debug.Log($"CurrentIllustration is {currentIllustration.IlluLocation}"); 
                     }
+                    else
+                    {
+                        Debug.LogWarning($"IlluLocation {currentRow.Name} can not be found!");
+                    }
+                    if (currentBackgroundLoader != null)
+                    {
+                        Debug.Log($"CurrentBackgroundLoader is {currentBackgroundLoader.Backgroundpath}"); 
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Backgroundpath {currentRow.Background} can not be found!");
+                    }
+                }
             }
             else
             {
                 ChapterIndex = SceneIndex = ClipIndex = 0;
-                NumberIndex = 1;
+                NumberIndex = 0;
                 StoryPlay = false;
             }
         }
-        CurrentNumberIndex = NumberIndex;
     }
 }
