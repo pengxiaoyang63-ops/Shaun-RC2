@@ -36,7 +36,7 @@ public class Movement : MonoBehaviour
             RD2.gravityScale = 5f;
         }
         speed = 0.5f;
-        jump = 26f;
+        jump = 22f;
         onground = false;
         maxspeed = 12;
         RD2.gravityScale = 6f;
@@ -120,7 +120,7 @@ public class Movement : MonoBehaviour
     }
     void Wallmotion()
     {
-        if (onwallR == true)
+        if (onwallR == true && onground == false)
         {
             if (Input.GetKey(KeyCode.D)&&Input.GetKeyDown(KeyCode.K))
             {
@@ -129,7 +129,7 @@ public class Movement : MonoBehaviour
                 RD2.velocity = new Vector2(-WallJumpCounter,20);
             }
         }
-        if (onwallL == true)
+        if (onwallL == true && onground == false)
         {
             if (Input.GetKey(KeyCode.A)&&Input.GetKeyDown(KeyCode.K))
             {
