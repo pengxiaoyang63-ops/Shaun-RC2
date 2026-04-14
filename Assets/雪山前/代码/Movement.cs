@@ -11,6 +11,7 @@ public class Movement : MonoBehaviour
     Rigidbody2D RD2;
     public float speed;
     public float jump;
+    public float Walljump;
     public bool onground;
     public bool onwallL;
     public bool onwallR;
@@ -33,13 +34,13 @@ public class Movement : MonoBehaviour
         {
             RD2.bodyType = RigidbodyType2D.Dynamic;
             RD2.isKinematic = false;
-            RD2.gravityScale = 5f;
         }
         speed = 0.5f;
         jump = 22f;
+        Walljump = jump*0.4f;
         onground = false;
-        maxspeed = 12;
-        RD2.gravityScale = 6f;
+        maxspeed = 9.5f;
+        RD2.gravityScale = 5f;
     }
     void FixedUpdate()
     {
@@ -51,10 +52,10 @@ public class Movement : MonoBehaviour
             locomotion();
             faceupdate();
             Jumping();
-            Wallmotion();
+            //Wallmotion();
         }
         Reset();
-        Dash();
+        //Dash();
         ResetY();
     }
     void faceupdate()
@@ -73,12 +74,12 @@ public class Movement : MonoBehaviour
         if (onground == true || onwallL == true || onwallR == true)
         {
             Invoke("ResetDoubleJump",0.03f);
-            DoubleJump = 0;
+            //DoubleJump = 0;
         }
     }
     void ResetDoubleJump()
     {
-        DoubleJump = 0;
+        //DoubleJump = 0;
     }
     void locomotion()
     {
@@ -126,7 +127,7 @@ public class Movement : MonoBehaviour
             {
                 WallJumpBool = !WallJumpBool;
                 WallJumpCounter = 40;
-                RD2.velocity = new Vector2(-WallJumpCounter,20);
+                RD2.velocity = new Vector2(-WallJumpCounter,Walljump);
             }
         }
         if (onwallL == true && onground == false)
@@ -135,19 +136,19 @@ public class Movement : MonoBehaviour
             {
                 WallJumpBool = !WallJumpBool;
                 WallJumpCounter = 40;
-                RD2.velocity = new Vector2(WallJumpCounter,20);
+                RD2.velocity = new Vector2(WallJumpCounter,Walljump);
             }
         }
         if (WallJumpBool == true&&WallJumpCounter>=-9&&onwallL == false&&onwallR == false)
         {
             if (WallJumpBool&&Input.GetKey(KeyCode.A)&&Input.GetKey(KeyCode.K))
             {
-                RD2.velocity = new Vector2(WallJumpCounter,20);
+                RD2.velocity = new Vector2(WallJumpCounter,Walljump);
                 WallJumpCounter-=2;
             }
             else if (WallJumpBool&&Input.GetKey(KeyCode.D)&&Input.GetKey(KeyCode.K))
             {
-                RD2.velocity = new Vector2(-WallJumpCounter,20);
+                RD2.velocity = new Vector2(-WallJumpCounter,Walljump);
                 WallJumpCounter-=2;
             }
         }
