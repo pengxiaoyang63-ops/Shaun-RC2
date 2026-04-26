@@ -23,13 +23,10 @@ public class BackgroundLocations : MonoBehaviour
             return;
         }
 
-        // 清空旧数据
         BackgroundLoadingList.Clear();
 
-        // 读取文本（建议用 .text 而不是 .ToString()）
         string csvText = BackgroundLocation.text;
         
-        // 按行拆分 (同时处理 \r\n 和 \n)
         string[] lines = csvText.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
         foreach (string line in lines)
@@ -48,7 +45,6 @@ public class BackgroundLocations : MonoBehaviour
             row.Background = cols[0].Trim();
             row.Backgroundpath = cols[1].Trim();
 
-            // 添加到列表中
             BackgroundLoadingList.Add(row);
         }
 
@@ -56,8 +52,6 @@ public class BackgroundLocations : MonoBehaviour
     }
     public BackgroundLoader GetBackgroundLoadingList(string background)
     {
-    // 使用 Find 方法查找第一个符合所有条件的数据
-    // r 代表 List 里的每一行
         BackgroundLoader row = BackgroundLoadingList.Find(r => 
         r.Background ==  background
         );

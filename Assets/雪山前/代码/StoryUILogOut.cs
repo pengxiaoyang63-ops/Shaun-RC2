@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.SearchService;
 using UnityEngine;
-using UnityEngine.AI;
+using UnityEngine.InputSystem;
 
 public class StoryUILogOut : MonoBehaviour
 {
@@ -13,7 +12,24 @@ public class StoryUILogOut : MonoBehaviour
     public int NumberIndex;    // 序号索引
     public bool StoryPlay;
     public bool Nextpage;
+    [SerializeField] private InputActionAsset inputActions;
+    private InputActionAsset realInputActions;
+    private InputAction choice1;
+    private InputAction choice2;
+    private InputAction choice3;
+    private InputAction choice4;
     
+    void Awake()
+    {
+        realInputActions = inputActions != null ? inputActions : Resources.Load<InputActionAsset>("GameControls");
+        var storyMap = realInputActions.FindActionMap("Story");
+        choice1 = storyMap.FindAction("Choice1");
+        choice2 = storyMap.FindAction("Choice2");
+        choice3 = storyMap.FindAction("Choice3");
+        choice4 = storyMap.FindAction("Choice4");
+    }
+    void OnEnable() { realInputActions.Enable(); }
+    void OnDisable() { realInputActions.Disable(); }
     void Start()
     {
         StoryPlay = false;
@@ -32,7 +48,7 @@ public class StoryUILogOut : MonoBehaviour
             ClipIndex, 
             NumberIndex
             );
-        if (Input.GetKeyDown(KeyCode.Alpha1))
+        if (choice1.WasPressedThisFrame())
         {
             NumberIndex++;
             Nextpage=true;
@@ -42,7 +58,7 @@ public class StoryUILogOut : MonoBehaviour
                 ClipIndex = currentRow.Goto1;
             }
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        else if (choice2.WasPressedThisFrame())
         {
             NumberIndex++;
             Nextpage=true;
@@ -52,7 +68,7 @@ public class StoryUILogOut : MonoBehaviour
                 ClipIndex = currentRow.Goto2;
             }
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        else if (choice3.WasPressedThisFrame())
         {
             NumberIndex++;
             Nextpage=true;
@@ -62,7 +78,7 @@ public class StoryUILogOut : MonoBehaviour
                 ClipIndex = currentRow.Goto3;
             }
         }
-        else if (Input.GetKeyDown(KeyCode.Alpha4))
+        else if (choice4.WasPressedThisFrame())
         {
             NumberIndex++;
             Nextpage=true;

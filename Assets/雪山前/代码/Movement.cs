@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using JetBrains.Annotations;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Movement : MonoBehaviour
 {
@@ -25,6 +21,36 @@ public class Movement : MonoBehaviour
     public bool FaceRight;
     public int faceCoefficient;
     public int DoubleJump = 0;
+    [SerializeField] private InputActionAsset inputActions;
+    private InputActionAsset realInputActions;
+    private InputAction moveLeft;
+    private InputAction moveRight;
+    private InputAction jumpAction;
+    private InputAction dashAction;
+    private InputAction resetAction;
+    private bool jumpPressedThisFrame;
+    private bool resetPressedThisFrame;
+    private bool moveLeftReleasedThisFrame;
+    private bool moveRightReleasedThisFrame;
+    void Awake()
+    {
+        realInputActions = inputActions != null ? inputActions : Resources.Load<InputActionAsset>("GameControls");
+        var playerMap = realInputActions.FindActionMap("Player");
+        moveLeft = playerMap.FindAction("MoveLeft");
+        moveRight = playerMap.FindAction("MoveRight");
+        jumpAction = playerMap.FindAction("Jump");
+        dashAction = playerMap.FindAction("Dash");
+        resetAction = playerMap.FindAction("Reset");
+    }
+    void OnEnable() { realInputActions.Enable(); }
+    void OnDisable() { realInputActions.Disable(); }
+    void Update()
+    {
+        jumpPressedThisFrame = jumpAction.WasPressedThisFrame();
+        resetPressedThisFrame = resetAction.WasPressedThisFrame();
+        moveLeftReleasedThisFrame = moveLeft.WasReleasedThisFrame();
+        moveRightReleasedThisFrame = moveRight.WasReleasedThisFrame();
+    }
     void Start()
     {
         Time.fixedDeltaTime = 1/500f;
@@ -83,7 +109,7 @@ public class Movement : MonoBehaviour
     }
     void locomotion()
     {
-        if (Input.GetKey(KeyCode.A))
+        if (moveLeft.IsPressed())
         {  
             FaceRight = false;
             if (RD2.velocity.x > -maxspeed)
@@ -95,7 +121,7 @@ public class Movement : MonoBehaviour
                 RD2.velocity = new Vector2(-maxspeed, RD2.velocity.y);
             }
         }
-        else if (Input.GetKey(KeyCode.D))
+        else if (moveRight.IsPressed())
         {
             FaceRight = true;
             if (RD2.velocity.x < maxspeed)
@@ -107,11 +133,11 @@ public class Movement : MonoBehaviour
                 RD2.velocity = new Vector2(maxspeed, RD2.velocity.y);
             }
         }
-        else if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.D))
+        else if (moveLeftReleasedThisFrame || moveRightReleasedThisFrame)
         {
             RD2.velocity = new Vector2(0, RD2.velocity.y);
         }
-        else if (!Input.GetKeyUp(KeyCode.A) && !Input.GetKeyUp(KeyCode.D))
+        else if (!moveLeftReleasedThisFrame && !moveRightReleasedThisFrame)
         {
             if (Dashing == false)
             {
@@ -123,7 +149,7 @@ public class Movement : MonoBehaviour
     {
         if (onwallR == true && onground == false)
         {
-            if (Input.GetKey(KeyCode.D)&&Input.GetKeyDown(KeyCode.K))
+            if (moveRight.IsPressed() && jumpPressedThisFrame)
             {
                 WallJumpBool = !WallJumpBool;
                 WallJumpCounter = 40;
@@ -132,7 +158,7 @@ public class Movement : MonoBehaviour
         }
         if (onwallL == true && onground == false)
         {
-            if (Input.GetKey(KeyCode.A)&&Input.GetKeyDown(KeyCode.K))
+            if (moveLeft.IsPressed() && jumpPressedThisFrame)
             {
                 WallJumpBool = !WallJumpBool;
                 WallJumpCounter = 40;
@@ -141,12 +167,12 @@ public class Movement : MonoBehaviour
         }
         if (WallJumpBool == true&&WallJumpCounter>=-9&&onwallL == false&&onwallR == false)
         {
-            if (WallJumpBool&&Input.GetKey(KeyCode.A)&&Input.GetKey(KeyCode.K))
+            if (WallJumpBool&&moveLeft.IsPressed() && jumpAction.IsPressed())
             {
                 RD2.velocity = new Vector2(WallJumpCounter,Walljump);
                 WallJumpCounter-=2;
             }
-            else if (WallJumpBool&&Input.GetKey(KeyCode.D)&&Input.GetKey(KeyCode.K))
+            else if (WallJumpBool&&moveRight.IsPressed() && jumpAction.IsPressed())
             {
                 RD2.velocity = new Vector2(-WallJumpCounter,Walljump);
                 WallJumpCounter-=2;
@@ -159,14 +185,14 @@ public class Movement : MonoBehaviour
     }
     void Jumping()
     {
-        if (Input.GetKeyDown(KeyCode.K) && onground == true)
+        if (jumpPressedThisFrame && onground == true)
         {
             if (Dashing == false)
             {
                 RD2.velocity = new Vector2(RD2.velocity.x, jump);
             }
         }
-        else if (Input.GetKeyDown(KeyCode.K) && onground == false && onwallL == false && onwallR == false)
+        else if (jumpPressedThisFrame && onground == false && onwallL == false && onwallR == false)
         {
             if (Dashing == false && DoubleJump == 0)
             {
@@ -177,7 +203,7 @@ public class Movement : MonoBehaviour
     }
     void ResetY()
     {
-        if (onground==false&&!Input.GetKey(KeyCode.K))
+        if (onground==false&&!jumpAction.IsPressed())
         {
             if (RD2.velocity.y > 0)
             {
@@ -187,7 +213,7 @@ public class Movement : MonoBehaviour
     }
     void Dash()
     {
-        if (Input.GetKey(KeyCode.Space)&&DashWait>0.5f)
+        if (dashAction.IsPressed()&&DashWait>0.5f)
         {
             RD2.velocity = new Vector2(0,0);
             Dashing = true;
@@ -210,7 +236,7 @@ public class Movement : MonoBehaviour
     }
     void Reset()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (resetPressedThisFrame)
         {
             RD2.bodyType = RigidbodyType2D.Static;
             RD2.position = new Vector2(0, 0);
