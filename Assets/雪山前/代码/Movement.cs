@@ -81,7 +81,7 @@ public class Movement : MonoBehaviour
             //Wallmotion();
         }
         Reset();
-        //Dash();
+        Dash();
         ResetY();
     }
     void faceupdate()
