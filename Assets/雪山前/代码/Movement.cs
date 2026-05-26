@@ -32,6 +32,7 @@ public class Movement : MonoBehaviour
     private bool resetPressedThisFrame;
     private bool moveLeftReleasedThisFrame;
     private bool moveRightReleasedThisFrame;
+    public Animator animator;
     void Awake()
     {
         realInputActions = inputActions != null ? inputActions : Resources.Load<InputActionAsset>("GameControls");
@@ -53,6 +54,7 @@ public class Movement : MonoBehaviour
     }
     void Start()
     {
+        animator = GetComponent<Animator>();
         Time.fixedDeltaTime = 1/500f;
         // Get the Rigidbody2D first before modifying it
         RD2 = GetComponent<Rigidbody2D>();
@@ -70,6 +72,7 @@ public class Movement : MonoBehaviour
     }
     void FixedUpdate()
     {
+        animator.Play("Idle");
         Timer += Time.deltaTime;
         DashWait += Time.deltaTime;
         DoubleJumpreset();
@@ -78,7 +81,7 @@ public class Movement : MonoBehaviour
             locomotion();
             faceupdate();
             Jumping();
-            //Wallmotion();
+            Wallmotion();
         }
         Reset();
         Dash();
@@ -111,6 +114,7 @@ public class Movement : MonoBehaviour
     {
         if (moveLeft.IsPressed())
         {  
+            animator.Play("Walk");
             FaceRight = false;
             if (RD2.velocity.x > -maxspeed)
             {
@@ -123,6 +127,7 @@ public class Movement : MonoBehaviour
         }
         else if (moveRight.IsPressed())
         {
+            animator.Play("Walk");
             FaceRight = true;
             if (RD2.velocity.x < maxspeed)
             {
@@ -136,12 +141,14 @@ public class Movement : MonoBehaviour
         else if (moveLeftReleasedThisFrame || moveRightReleasedThisFrame)
         {
             RD2.velocity = new Vector2(0, RD2.velocity.y);
+            animator.Play("Idle MC");
         }
         else if (!moveLeftReleasedThisFrame && !moveRightReleasedThisFrame)
         {
             if (Dashing == false)
             {
-                RD2.velocity = new Vector2(0, RD2.velocity.y);   
+                RD2.velocity = new Vector2(0, RD2.velocity.y);
+                animator.Play("Idle MC");
             }
         }
     }

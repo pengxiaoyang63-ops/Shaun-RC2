@@ -7,7 +7,7 @@ public class PositionSet : MonoBehaviour
 {
     public float Index;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         CameraDepth CD = FindObjectOfType<CameraDepth>();
         Index = CD.Index;
