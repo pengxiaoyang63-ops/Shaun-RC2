@@ -72,7 +72,6 @@ public class Movement : MonoBehaviour
     }
     void FixedUpdate()
     {
-        animator.Play("Idle");
         Timer += Time.deltaTime;
         DashWait += Time.deltaTime;
         DoubleJumpreset();
@@ -145,7 +144,7 @@ public class Movement : MonoBehaviour
         }
         else if (!moveLeftReleasedThisFrame && !moveRightReleasedThisFrame)
         {
-            if (Dashing == false)
+            if (Dashing == false && onground == true)
             {
                 RD2.velocity = new Vector2(0, RD2.velocity.y);
                 animator.Play("Idle MC");
@@ -214,7 +213,26 @@ public class Movement : MonoBehaviour
         {
             if (RD2.velocity.y > 0)
             {
+                animator.Play("Jump 02");
                 RD2.velocity = new Vector2(RD2.velocity.x,RD2.velocity.y/5);   
+            }
+        }
+    }
+    void JumpAnimation()
+    {
+        if (onground == false && !jumpAction.IsPressed())
+        {
+            if (RD2.velocity.y > 0)
+            {
+                animator.Play("Jump 01");
+            }
+            else if (RD2.velocity.y > -3 && RD2.velocity.y < 3)
+            {
+                animator.Play("Jump 02");
+            }
+            else if (RD2.velocity.y < -3)
+            {
+                animator.Play("Jump 03");
             }
         }
     }

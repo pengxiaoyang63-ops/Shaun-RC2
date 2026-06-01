@@ -616,7 +616,6 @@ GameObject:
   m_Component:
   - component: {fileID: 219532187}
   - component: {fileID: 219532188}
-  - component: {fileID: 219532189}
   m_Layer: 3
   m_Name: Decoration collection
   m_TagString: Untagged
@@ -664,24 +663,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Targettransform: {fileID: 0}
   Index: 0.17
-  LastPosition: {x: 0, y: 0, z: 0}
-  CurrentPosition: {x: 0, y: 0, z: 0}
-  StartPosition: {x: 0, y: 0, z: 0}
-  OriginPosition: {x: 0, y: 0, z: 0}
-  MoveAmount: {x: 0, y: 0}
---- !u!114 &219532189
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 219532186}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39e957d3224665341a5ce3f5ecba30a4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Index: 0
 --- !u!1 &299698860
 GameObject:
   m_ObjectHideFlags: 0
