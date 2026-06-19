@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,9 +15,8 @@ public class Movement : MonoBehaviour
     public bool WallJumpBool;
     public int WallJumpCounter;
     public float maxspeed;
-    public float Dashcounter;
-    public float DashWait;
-    public float Timer;
+    public float DashTimer;
+    public float DashWaitTime;
     public bool Dashing;
     public bool FaceRight;
     public int faceCoefficient;
@@ -27,11 +27,16 @@ public class Movement : MonoBehaviour
     private InputAction moveRight;
     private InputAction jumpAction;
     private InputAction dashAction;
-    private InputAction resetAction;
     private bool jumpPressedThisFrame;
-    private bool resetPressedThisFrame;
     private bool moveLeftReleasedThisFrame;
     private bool moveRightReleasedThisFrame;
+
+    public bool HittedAnimation;
+    public bool DashAnimation;
+    public bool AttackAnimation;
+    public bool JumpAnimation;
+    public bool WalkAnimation;
+    public bool IdleAnimation;
     public Animator animator;
     void Awake()
     {
@@ -41,14 +46,12 @@ public class Movement : MonoBehaviour
         moveRight = playerMap.FindAction("MoveRight");
         jumpAction = playerMap.FindAction("Jump");
         dashAction = playerMap.FindAction("Dash");
-        resetAction = playerMap.FindAction("Reset");
     }
     void OnEnable() { realInputActions.Enable(); }
     void OnDisable() { realInputActions.Disable(); }
     void Update()
     {
         jumpPressedThisFrame = jumpAction.WasPressedThisFrame();
-        resetPressedThisFrame = resetAction.WasPressedThisFrame();
         moveLeftReleasedThisFrame = moveLeft.WasReleasedThisFrame();
         moveRightReleasedThisFrame = moveRight.WasReleasedThisFrame();
     }
@@ -72,17 +75,15 @@ public class Movement : MonoBehaviour
     }
     void FixedUpdate()
     {
-        Timer += Time.deltaTime;
-        DashWait += Time.deltaTime;
+        DashWaitTime += Time.deltaTime;
         DoubleJumpreset();
         if (Dashing == false)
         {
-            locomotion();
             faceupdate();
+            locomotion();
             Jumping();
             Wallmotion();
         }
-        Reset();
         Dash();
         ResetY();
     }
@@ -113,7 +114,6 @@ public class Movement : MonoBehaviour
     {
         if (moveLeft.IsPressed())
         {  
-            animator.Play("Walk");
             FaceRight = false;
             if (RD2.velocity.x > -maxspeed)
             {
@@ -126,7 +126,6 @@ public class Movement : MonoBehaviour
         }
         else if (moveRight.IsPressed())
         {
-            animator.Play("Walk");
             FaceRight = true;
             if (RD2.velocity.x < maxspeed)
             {
@@ -140,14 +139,12 @@ public class Movement : MonoBehaviour
         else if (moveLeftReleasedThisFrame || moveRightReleasedThisFrame)
         {
             RD2.velocity = new Vector2(0, RD2.velocity.y);
-            animator.Play("Idle MC");
         }
         else if (!moveLeftReleasedThisFrame && !moveRightReleasedThisFrame)
         {
             if (Dashing == false && onground == true)
             {
                 RD2.velocity = new Vector2(0, RD2.velocity.y);
-                animator.Play("Idle MC");
             }
         }
     }
@@ -213,63 +210,111 @@ public class Movement : MonoBehaviour
         {
             if (RD2.velocity.y > 0)
             {
-                animator.Play("Jump 02");
                 RD2.velocity = new Vector2(RD2.velocity.x,RD2.velocity.y/5);   
             }
         }
     }
-    void JumpAnimation()
+    string JumpAnimationSwitch()
     {
         if (onground == false && !jumpAction.IsPressed())
         {
             if (RD2.velocity.y > 0)
             {
-                animator.Play("Jump 01");
+                return "Jump 01";
             }
             else if (RD2.velocity.y > -3 && RD2.velocity.y < 3)
             {
-                animator.Play("Jump 02");
+                return "Jump 02";
             }
             else if (RD2.velocity.y < -3)
             {
-                animator.Play("Jump 03");
+                return "Jump 03";
             }
+            else
+            {
+                return "Idle";
+            }
+        }
+        else
+        {
+            return "Idle";
+        }
+    }
+    string AttackAnimationSwitch()
+    {
+        if ()
+        {
+            return "UATK";
+        }
+        else if ()
+        {
+            return "DATK";
+        }
+        else if ()
+        {
+            return "ATK 1";
+        }
+        else if ()
+        {
+            return "ATK 2";
         }
     }
     void Dash()
     {
-        if (dashAction.IsPressed()&&DashWait>0.5f)
+        if (dashAction.IsPressed()&&DashWaitTime>0.5f)
         {
             RD2.velocity = new Vector2(0,0);
             Dashing = true;
-            DashWait = 0f;
+            DashWaitTime = 0f;
             RD2.velocity = new Vector2(RD2.velocity.x,0);
             RD2.gravityScale = 0;
-            Dashcounter = 0f;
+            DashTimer = 0f;
         }
         if(Dashing == true)
         {
             RD2.velocity = new Vector2(35*faceCoefficient,0);
-            Dashcounter += Time.deltaTime;
-            if (Dashcounter >= 0.2f)
+            DashTimer += Time.deltaTime;
+            if (DashTimer >= 0.2f)
             {
-                DashWait = 0f;
+                DashWaitTime = 0f;
                 Dashing = false;
                 RD2.gravityScale = 5f;
             }
         }
     }
-    void Reset()
-    {
-        if (resetPressedThisFrame)
-        {
-            RD2.bodyType = RigidbodyType2D.Static;
-            RD2.position = new Vector2(0, 0);
-            RD2.bodyType = RigidbodyType2D.Dynamic;
-        }
-    }
     public void GroundFix()
     {
         RD2.velocity = new Vector2(RD2.velocity.x, 1);
+    }
+    public string AnimationSwitch()
+    {
+        if (HittedAnimation == true)
+        {
+            return "Hitted";
+        }
+        else if (DashAnimation == true)
+        {
+            return "Dash";
+        }
+        else if (AttackAnimation == true)
+        {
+            return AttackAnimationSwitch();
+        }
+        else if (JumpAnimation == true)
+        {
+            return JumpAnimationSwitch();
+        }
+        else if (WalkAnimation == true)
+        {
+            return "Walk";
+        }
+        else if (IdleAnimation == true)
+        {
+            return "Idle";
+        }
+        else
+        {
+            return "Idle";
+        }
     }
 }
