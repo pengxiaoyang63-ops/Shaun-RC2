@@ -240,7 +240,7 @@ public class Movement : MonoBehaviour
             return "Idle";
         }
     }
-    string AttackAnimationSwitch()
+    /*string AttackAnimationSwitch()
     {
         if ()
         {
@@ -258,7 +258,7 @@ public class Movement : MonoBehaviour
         {
             return "ATK 2";
         }
-    }
+    }*/
     void Dash()
     {
         if (dashAction.IsPressed()&&DashWaitTime>0.5f)
@@ -286,7 +286,7 @@ public class Movement : MonoBehaviour
     {
         RD2.velocity = new Vector2(RD2.velocity.x, 1);
     }
-    public string AnimationSwitch()
+    /*public string AnimationSwitch()
     {
         if (HittedAnimation == true)
         {
@@ -298,7 +298,7 @@ public class Movement : MonoBehaviour
         }
         else if (AttackAnimation == true)
         {
-            return AttackAnimationSwitch();
+
         }
         else if (JumpAnimation == true)
         {
@@ -316,5 +316,5 @@ public class Movement : MonoBehaviour
         {
             return "Idle";
         }
-    }
+    }*/
 }
