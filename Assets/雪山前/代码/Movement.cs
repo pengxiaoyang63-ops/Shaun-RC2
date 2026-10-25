@@ -103,12 +103,12 @@ public class Movement : MonoBehaviour
         if (onground == true || onwallL == true || onwallR == true)
         {
             Invoke("ResetDoubleJump",0.03f);
-            //DoubleJump = 0;
+            DoubleJump = 0;
         }
     }
     void ResetDoubleJump()
     {
-        //DoubleJump = 0;
+        DoubleJump = 0;
     }
     void locomotion()
     {
@@ -240,25 +240,6 @@ public class Movement : MonoBehaviour
             return "Idle";
         }
     }
-    string AttackAnimationSwitch()
-    {
-        if ()
-        {
-            return "UATK";
-        }
-        else if ()
-        {
-            return "DATK";
-        }
-        else if ()
-        {
-            return "ATK 1";
-        }
-        else if ()
-        {
-            return "ATK 2";
-        }
-    }
     void Dash()
     {
         if (dashAction.IsPressed()&&DashWaitTime>0.5f)
@@ -285,36 +266,5 @@ public class Movement : MonoBehaviour
     public void GroundFix()
     {
         RD2.velocity = new Vector2(RD2.velocity.x, 1);
-    }
-    public string AnimationSwitch()
-    {
-        if (HittedAnimation == true)
-        {
-            return "Hitted";
-        }
-        else if (DashAnimation == true)
-        {
-            return "Dash";
-        }
-        else if (AttackAnimation == true)
-        {
-            return AttackAnimationSwitch();
-        }
-        else if (JumpAnimation == true)
-        {
-            return JumpAnimationSwitch();
-        }
-        else if (WalkAnimation == true)
-        {
-            return "Walk";
-        }
-        else if (IdleAnimation == true)
-        {
-            return "Idle";
-        }
-        else
-        {
-            return "Idle";
-        }
     }
 }
