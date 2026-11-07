@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Cinemachine;
 public class YXWarrierHealth : MonoBehaviour
 {
     public int health;
     public int health2;
     public GameObject Victory;
+    public Slider BossSlider;              // Boss 血条（屏幕下方）
     public Transform Transform;
     public Animator animator;
     public YXwarriermove CharacterController;
@@ -16,6 +18,12 @@ public class YXWarrierHealth : MonoBehaviour
     {
         Victory.SetActive(false);
         health = 40;
+        if (BossSlider != null)
+        {
+            BossSlider.minValue = 0;
+            BossSlider.maxValue = health;
+            BossSlider.value = health;
+        }
         impulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
@@ -31,6 +39,10 @@ public class YXWarrierHealth : MonoBehaviour
             animator.SetTrigger("Hitted");
         }
         health2 = health;
+        if (BossSlider != null)
+        {
+            BossSlider.value = health;
+        }
         if (health <= 0)
         {
             Victory.SetActive(true);

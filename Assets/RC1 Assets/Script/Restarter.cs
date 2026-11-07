@@ -24,12 +24,12 @@ public class Restarter : MonoBehaviour
             Time.timeScale = 0f;
             YXWarrierHealth.health = 0;
         }
-        if (Input.GetKey(KeyCode.Space) && YXWarrierHealth.health == 0)
+        if (Input.GetKeyDown(KeyCode.Space) && YXWarrierHealth.health == 0)
         {
             Time.timeScale = 1f;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
-        else if (Input.GetKey(KeyCode.Space) && MainCharacterHealth.health == 0)
+        else if (Input.GetKeyDown(KeyCode.Space) && MainCharacterHealth.health == 0)
         {
             Time.timeScale = 1f;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);

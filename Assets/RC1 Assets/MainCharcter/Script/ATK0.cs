@@ -4,44 +4,18 @@ using UnityEngine;
 
 public class ATK0 : StateMachineBehaviour
 {
-    private bool Bool;
-    // OnStateEnter is called when a transition starts and the state machine starts to this state
+    // 进入攻击状态时把 ATK 清 0；
+    // 之后攻击过程中按下的 ATK 值必须保留到剪辑结束，
+    // 状态机才能用 exitTime=1 + ATK Equals 1 衔接到下一段（ATK 1 -> ATK 2 -> ATK 1 ...）。
+    // 原实现在 OnStateUpdate 里每帧清零，会把预输入抹掉，导致永远只能循环 ATK 1。
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        Bool = true;
+        Reset1(animator);
     }
 
-    // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
-    override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    {
-        {
-            Reset1(animator);
-            Bool = false;
-        }
-    }
-
-    // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
-    //override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    
-    //}
-
-    // OnStateMove is called right after Animator.OnAnimatorMove()
-    //override public void OnStateMove(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that processes and affects root motion
-    //}
-
-    // OnStateIK is called right after Animator.OnAnimatorIK()
-    //override public void OnStateIK(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
-    //{
-    //    // Implement code that sets up animation IK (inverse kinematics)
-    //}
     private void Reset1(Animator animator)
     {
         animator.SetFloat("RunSpeed", 1f);
         animator.SetInteger("ATK", 0);
     }
-
-
 }

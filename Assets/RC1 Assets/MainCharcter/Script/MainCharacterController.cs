@@ -15,7 +15,6 @@ public class MainCharacterController : MonoBehaviour
     public bool Controlled;
     public bool Jump;
     public bool PreJumped;
-    public Vector2 Hitposition;
     public Animator animator;
     public Animator HittedEffect;
     public GameObject GameObject;
@@ -36,9 +35,9 @@ public class MainCharacterController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        MaxHeight = 0.4f;
-        Xforce = 15;
-        Yforce = 50;
+        MaxHeight = 0.25f;
+        Xforce = 20;
+        Yforce = 40;
         Isgrounded = false;
         CurrentHeight = 0;
         TimesinceLastAttack = 0f;
@@ -206,7 +205,7 @@ public class MainCharacterController : MonoBehaviour
                     {
                         if (TimesinceLastAttack >= AttackInterval)
                         {
-                        animator.SetInteger("ATK", 2);
+                            animator.SetInteger("ATK", 2);
                         }
                     }
                     else
@@ -218,14 +217,14 @@ public class MainCharacterController : MonoBehaviour
                 {
                     if (TimesinceLastAttack >= AttackInterval)
                     {
-                    animator.SetInteger("ATK", 3);
+                        animator.SetInteger("ATK", 3);
                     }
                 }
                 else if (Input.GetKeyDown(KeyCode.J) && !Input.GetKey(KeyCode.W))
                 {
                     animator.SetInteger("ATK", 1);
                 }
-            if (AnimName == "ATK 0" || AnimName == "ATK 1" && LastAnimName != AnimName)
+            if ((AnimName == "ATK 0" || AnimName == "ATK 1") && LastAnimName != AnimName)
             {
                 if (Input.GetKey(KeyCode.D))
                     Transform.localScale = new Vector2(1, 1);
@@ -284,14 +283,11 @@ public class MainCharacterController : MonoBehaviour
     }
     public void HitBackFunction()
     {
-        if (Hitposition.x < transform.position.x)
-        {
-            Rigidbody.velocity = new Vector2(-transform.localScale.x * 20, Rigidbody.velocity.y);
-        }
-        else
-        {
-            Rigidbody.velocity = new Vector2(-transform.localScale.x * -20, Rigidbody.velocity.y);
-        }
+        // 后坐力：方向永远与攻击方向相反。
+        // 攻击方向 = 角色朝向（localScale.x：1 朝右 / -1 朝左），
+        // 所以朝向为正时向左退，朝向为负时向右退；不再依赖命中点/世界坐标。
+        float facing = Transform.localScale.x >= 0f ? 1f : -1f;
+        Rigidbody.velocity = new Vector2(-facing * 20f, Rigidbody.velocity.y);
     }
     public void HitUpFunction()
     {
