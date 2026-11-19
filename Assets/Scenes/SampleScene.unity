@@ -9629,6 +9629,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1207989744}
   - component: {fileID: 1207989743}
+  - component: {fileID: 1207989746}
+  - component: {fileID: 1207989745}
   m_Layer: 0
   m_Name: "\u9776\u5B50\u7A3B\u8349\u4EBA"
   m_TagString: Untagged
@@ -9703,6 +9705,52 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
+--- !u!114 &1207989745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207989742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e792cf12b7a902f4f992d505a68c7a9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 0.6
+  angle: 360
+  clockwise: 1
+--- !u!114 &1207989746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207989742}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b2cb9e750028c642a1939e30f995de9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  interactor: {fileID: 78931060}
+  detectDistance: 3
+  triggerKey: 102
+  onInteract:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1207989745}
+        m_TargetAssemblyTypeName: Spin360, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  reactionDuration: 0.6
 --- !u!1 &1300155071
 GameObject:
   m_ObjectHideFlags: 0
