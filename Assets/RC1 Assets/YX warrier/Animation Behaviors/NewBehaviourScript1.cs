@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class NewBehaviourScript1 : MonoBehaviour
 {
     public GameObject GameObject;
     public Animator Animator;
