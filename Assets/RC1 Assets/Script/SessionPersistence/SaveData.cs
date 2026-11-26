@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,4 +6,12 @@ using UnityEngine;
 public class SaveData
 {
     public Vector2 playerPosition;
+    public List<ItemStack> items = new List<ItemStack>();
+}
+
+[System.Serializable]
+public class ItemStack
+{
+    public string itemId;
+    public int count;
 }

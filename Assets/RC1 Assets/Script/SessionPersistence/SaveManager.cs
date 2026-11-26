@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.IO;
 using System.Collections.Generic;
@@ -5,6 +6,9 @@ using System.Collections;
 
 public class SaveManager : MonoBehaviour
 {
+
+    public static event Action OnSaveDataLoaded;
+    
     private readonly List<IDataPersistence> dataPersistenceObjects = new();
     private string SavePath => Path.Combine(Application.dataPath, "..", "save.json");
 
@@ -62,6 +66,8 @@ public class SaveManager : MonoBehaviour
 
         foreach (var obj in dataPersistenceObjects)
             obj.LoadData(data);
+
+        OnSaveDataLoaded?.Invoke();
 
         Debug.Log($"Loaded data from {SavePath}");
     }
