@@ -82,15 +82,24 @@ public class InteractionTemplate : MonoBehaviour
     {
         IsReacting = true;
 
-        // 执行 Inspector 中挂接的具体表现
-        onInteract?.Invoke();
-
-        // 等待反应结束，避免连续触发
-        if (reactionDuration > 0f)
+        try
         {
-            yield return new WaitForSeconds(reactionDuration);
-        }
+            // 执行 Inspector 中挂接的具体表现
+            onInteract?.Invoke();
 
+            // 等待反应结束，避免连续触发
+            if (reactionDuration > 0f)
+                yield return new WaitForSecondsRealtime(reactionDuration);
+        }
+        finally
+        {
+            IsReacting = false;
+        }
+    }
+
+    private void OnDisable()
+    {
+        StopAllCoroutines();
         IsReacting = false;
     }
 
