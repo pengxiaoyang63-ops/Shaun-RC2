@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5481861558204714969}
   - component: {fileID: 8727323178840197174}
   - component: {fileID: 5614119842646857123}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: PreGroundChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5199,7 +5199,7 @@ GameObject:
   - component: {fileID: 2850814215132859081}
   - component: {fileID: 7763592432183083329}
   - component: {fileID: 3106027749111739104}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: GroundChecker
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10874,7 +10874,7 @@ GameObject:
   - component: {fileID: 322417422530732392}
   - component: {fileID: 6303685286954741071}
   - component: {fileID: 1106231096455885808}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: GroundFix
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -11056,7 +11056,7 @@ GameObject:
   - component: {fileID: 234502928621022152}
   - component: {fileID: 609434251917226290}
   - component: {fileID: 2938750700228838411}
-  m_Layer: 8
+  m_Layer: 7
   m_Name: MainCharacter
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -11130,7 +11130,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: f1ef80c8e32e2b54ea33bd4d39ab5a26, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 9fee6474d5dca144c9b94d63142b60c6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -11237,7 +11237,6 @@ MonoBehaviour:
   Controlled: 0
   Jump: 0
   PreJumped: 0
-  Hitposition: {x: 0, y: 0}
   animator: {fileID: 234502928621022152}
   HittedEffect: {fileID: 8541546927368994295}
   GameObject: {fileID: 8773325940378395785}

@@ -17,7 +17,7 @@ public class CameraControl : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject Obj = GameObject.Find("Player");
+        GameObject Obj = GameObject.FindGameObjectWithTag("Player");
         Playertransform = Obj.GetComponent<Transform>();
         Obj = GameObject.Find("StoryUILogOuter");
         storyUILogOut = Obj.GetComponent<StoryUILogOut>();

@@ -214,32 +214,6 @@ public class Movement : MonoBehaviour
             }
         }
     }
-    string JumpAnimationSwitch()
-    {
-        if (onground == false && !jumpAction.IsPressed())
-        {
-            if (RD2.velocity.y > 0)
-            {
-                return "Jump 01";
-            }
-            else if (RD2.velocity.y > -3 && RD2.velocity.y < 3)
-            {
-                return "Jump 02";
-            }
-            else if (RD2.velocity.y < -3)
-            {
-                return "Jump 03";
-            }
-            else
-            {
-                return "Idle";
-            }
-        }
-        else
-        {
-            return "Idle";
-        }
-    }
     void Dash()
     {
         if (dashAction.IsPressed()&&DashWaitTime>0.5f)
